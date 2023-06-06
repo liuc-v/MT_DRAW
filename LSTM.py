@@ -1,10 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as f
-from matplotlib import pyplot as plt
-
 import config
-from tokens2index import tokens2index, index2tokens
 
 
 class Attention(nn.Module):
@@ -111,33 +108,3 @@ class Seq2Seq(nn.Module):
             prediction = output.argmax(1)
             input_seq = target_seq[:, t] if teacher_force else prediction
         return outputs
-
-
-word = ['a', 'an', 'are', 'is', 'man', 'woman', 'on', 'at', 'in']
-index = tokens2index(word, 'en')
-index = torch.tensor(index).to(config.device)
-
-model = torch.load('attention.model')
-model = model.to(config.device)
-
-word_emb = model.decoder.embedding(index)
-word_emb = word_emb.cpu().detach().numpy()
-print(word_emb.shape)
-
-
-from sklearn.decomposition import PCA
-import numpy as np
-
-
-pca = PCA(n_components=2)
-pca.fit(word_emb)
-print(pca.transform(word_emb))
-
-data = pca.transform(word_emb)
-
-plt.scatter(pca.transform(word_emb)[:, 0], pca.transform(word_emb)[:, 1])
-
-for i in range(data.shape[0]):
-    plt.annotate(word[i], (data[i,0], data[i,1]))
-
-plt.show()

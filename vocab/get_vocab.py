@@ -15,6 +15,8 @@ def generate_vocab(sentences):
 
 SRC = generate_vocab(load_file("../data/multi30k_train.txt")[0])
 TRG = generate_vocab(load_file("../data/multi30k_train.txt")[1])
+print(SRC.get_itos()[:100])
+print(TRG.get_itos()[:100])
 print(len(SRC))
 print(len(TRG))
 # with open('SRC_VOCAB.pkl', 'wb') as f:
